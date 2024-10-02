@@ -193,10 +193,6 @@ class BaseApiResource extends JsonResource
                     unset($relationshipData[$key]);
                 }
             }
-
-            if ([] == $relationshipData->toArray(true)) {
-                $relationshipData = [];
-            }
         } elseif ($data instanceof Model) {
             $relationshipData = IdentifierResource::make($data);
             $this->checkIfDataIsSet($relationshipData) ?: $relationshipData = [];
@@ -225,7 +221,7 @@ class BaseApiResource extends JsonResource
 
     protected function getIncludedRelationships(Request $request)
     {
-        $this->includes = explode(',', $request->get('include', null));
+        $this->includes = explode(',', $request->get('include', '') ?? '');
         if (null == $this->includes) {
             return [];
         }
